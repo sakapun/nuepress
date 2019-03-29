@@ -2,7 +2,7 @@
   <div class="page">
     <ul>
       <li v-for="author in $store.state.authors" :key="author.id">
-        <nuxt-link :to="`/authors/${author.slug}`">
+        <nuxt-link :to="`/authors/${encodeURI(author.slug)}`">
           <h2 v-html="author.name"></h2>
           <div v-html="author.description"></div>
         </nuxt-link>
