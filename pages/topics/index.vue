@@ -2,7 +2,7 @@
   <div class="page">
     <ul>
       <li v-for="topic in $store.state.topics" v-if="topic.slug !== 'featured' && topic.count" :key="topic.id">
-        <nuxt-link :to="`/topics/${encodeURI(topic.slug)}`">
+        <nuxt-link :to="`/topics/${topic.slug}`">
           <h2 v-html="topic.name"></h2>
           <div v-html="topic.description"></div>
         </nuxt-link>
