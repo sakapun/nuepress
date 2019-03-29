@@ -57,5 +57,7 @@ module.exports = {
 
   vendor: ['lightgallery.js'],
 
-  fallback: 'index.html'
+  generate: {
+    fallback: true
+  }
 }
