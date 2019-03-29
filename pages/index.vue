@@ -38,15 +38,13 @@ import Spinner1 from '~/components/Spinner1.vue'
 
 export default {
   async asyncData ({ app, store, params }) {
-    if (!store.state.articles.length) {
-      let articles = await app.$axios.get(`${store.state.wordpressAPI}/wp/v2/posts?orderby=date&per_page=10&categories_exclude=${store.state.featuredID}&_embed`)
-      store.commit('setArticles', articles.data)
-    }
+    store.commit('clearArticles')
+    const articles = await app.$axios.get(`${store.state.wordpressAPI}/wp/v2/posts?orderby=date&per_page=10&categories_exclude=${store.state.featuredID}&_embed`)
+    store.commit('setArticles', articles.data)
 
-    if (!store.state.featuredArticles.length) {
-      let articles = await app.$axios.get(`${store.state.wordpressAPI}/wp/v2/posts?orderby=date&per_page=10&categories=${store.state.featuredID}&_embed`)
-      store.commit('setFeaturedArticles', articles.data)
-    }
+    store.commit('clearArticles')
+    const featuredArticles = await app.$axios.get(`${store.state.wordpressAPI}/wp/v2/posts?orderby=date&per_page=10&categories=${store.state.featuredID}&_embed`)
+    store.commit('setFeaturedArticles', featuredArticles.data)
   },
 
   components: {

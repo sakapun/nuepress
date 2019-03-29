@@ -17,7 +17,7 @@ const store = () => new Vuex.Store({
     authors: null,
     indexInfiniteLoading: {
       enabled: true,
-      page: 1
+      page: 0
     },
     featuredArticles: [],
     featuredColor: {},
@@ -34,6 +34,10 @@ const store = () => new Vuex.Store({
   mutations: {
     setArticle (state, data) {
       state.article = data
+    },
+    clearArticles (state) {
+      state.articles = []
+      state.indexInfiniteLoading.page = 0
     },
     setArticles (state, data) {
       state.articles = state.articles.concat(data)
@@ -52,6 +56,9 @@ const store = () => new Vuex.Store({
     },
     setFeaturedColor (state, data) {
       state.featuredColor = data
+    },
+    clearFeaturedArticles (state) {
+      state.featuredArticles = []
     },
     setFeaturedArticles (state, data) {
       state.featuredArticles = state.featuredArticles.concat(data)
