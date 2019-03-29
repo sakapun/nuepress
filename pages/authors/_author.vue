@@ -48,10 +48,11 @@ export default {
       store.commit('setAuthors', authors.data)
     }
 
-    if (!find(store.state.authorArticles, {'slug': params.author})) {
-      let author = find(store.state.authors, {'slug': params.author})
+    const authorEncoded = encodeURI(params.author)
+    if (!find(store.state.authorArticles, {'slug': authorEncoded})) {
+      let author = find(store.state.authors, {'slug': authorEncoded})
       let authorArticles = await app.$axios.get(`${store.state.wordpressAPI}/wp/v2/posts?orderby=date&per_page=10&author=${author.id}&_embed`)
-      store.commit('setAuthorArticles', {slug: params.author, articles: authorArticles.data, infiniteLoading: true, page: 1})
+      store.commit('setAuthorArticles', {slug: authorEncoded, articles: authorArticles.data, infiniteLoading: true, page: 1})
     }
   },
 
@@ -73,6 +74,9 @@ export default {
       return find(this.$store.state.authorArticles, {
         'slug': this.$route.params.author
       })
+    },
+    authorEncoded () {
+      return encodeURI(this.$route.params.author).toLowerCase()
     },
     isLoadingMore () {
       return this.authorArticles.infiniteLoading && this.authorArticles.articles.length >= 10
