@@ -48,10 +48,11 @@ export default {
       store.commit('setTopics', topics.data)
     }
 
-    if (!find(store.state.topicArticles, {'slug': params.topic})) {
-      let topic = find(store.state.topics, {'slug': params.topic})
+    const topicEncoded = encodeURI(params.topic).toLowerCase()
+    if (!find(store.state.topicArticles, {'slug': topicEncoded})) {
+      let topic = find(store.state.topics, {'slug': topicEncoded})
       let topicArticles = await app.$axios.get(`${store.state.wordpressAPI}/wp/v2/posts?orderby=date&per_page=10&categories=${topic.id}&_embed`)
-      store.commit('setTopicArticles', {slug: params.topic, articles: topicArticles.data, infiniteLoading: true, page: 1})
+      store.commit('setTopicArticles', {slug: topicEncoded, articles: topicArticles.data, infiniteLoading: true, page: 1})
     }
   },
 
@@ -66,13 +67,16 @@ export default {
   computed: {
     topic () {
       return find(this.$store.state.topics, {
-        'slug': this.$route.params.topic
+        'slug': this.topicEncoded
       })
     },
     topicArticles () {
       return find(this.$store.state.topicArticles, {
-        'slug': this.$route.params.topic
+        'slug': this.topicEncoded
       })
+    },
+    topicEncoded () {
+      return encodeURI(this.$route.params.topic).toLowerCase()
     },
     isLoadingMore () {
       return this.topicArticles.infiniteLoading && this.topicArticles.articles.length >= 10
