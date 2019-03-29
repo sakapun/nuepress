@@ -85,7 +85,7 @@ export default {
 
   head () {
     return {
-      title: `${this.topic.name} | ${this.$store.state.meta.name}`,
+      title: `${this.$route.params.topic} | ${this.$store.state.meta.name}`,
       meta: [
         { description: this.$store.state.meta.description }
       ]

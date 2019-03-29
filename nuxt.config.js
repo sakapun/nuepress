@@ -1,4 +1,6 @@
 const webpack = require('webpack')
+const axios = require('axios')
+const apiUrl = 'https://www.sakapun.shop/wp-json'
 
 module.exports = {
   // Build configuration
@@ -58,6 +60,28 @@ module.exports = {
   vendor: ['lightgallery.js'],
 
   generate: {
-    fallback: true
+    interval: 1000,
+    async routes () {
+      const posts = await axios.get(`${apiUrl}/wp/v2/posts?per_page=100&page=1&_embed=1`)
+      const postRoutes = posts.data.map((post) => {
+        return {
+          route: post.slug,
+          payload: post
+        }
+      })
+
+      const categories = await axios.get(`${apiUrl}/wp/v2/categories?per_page=100&page=1&_embed=1`)
+      const categoryRoutes = categories.data.map((category) => {
+        return {
+          route: category.slug,
+          payload: category
+        }
+      })
+
+      return [
+        ...postRoutes,
+        ...categoryRoutes
+      ]
+    }
   }
 }
