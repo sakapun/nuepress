@@ -14,10 +14,8 @@
 <script>
 export default {
   async asyncData ({ app, store, params }) {
-    if (!store.state.topics) {
-      let topics = await app.$axios.get(`${store.state.wordpressAPI}/wp/v2/categories?per_page=100`)
-      store.commit('setTopics', topics.data)
-    }
+    let topics = await app.$axios.get(`${store.state.wordpressAPI}/wp/v2/categories?per_page=100`)
+    store.commit('setTopics', topics.data)
   },
 
   head () {
