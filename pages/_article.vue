@@ -89,7 +89,7 @@ export default {
     return {
       disqusReady: false,
       expanded: false,
-      linkRGB: {}
+      linkRGB: ''
     }
   },
 
