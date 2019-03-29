@@ -131,7 +131,7 @@ export default {
   .article-list {
     article {
       &:first-child {
-        display: none;
+        // display: none;
       }
 
       &:nth-child(2) {
