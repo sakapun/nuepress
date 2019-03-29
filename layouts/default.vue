@@ -41,7 +41,7 @@ html {
   background-color: #f5f5f5;
   box-sizing: border-box;
   color: $primary;
-  font-family: 'Roboto Slab', serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", Hiragino Kaku Gothic ProN, "ヒラギノ角ゴ ProN W3", Arial, "メイリオ", Meiryo, sans-serif;;
   font-kerning: normal;
   font-size: 19px;
   font-weight: 400;
