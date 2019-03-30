@@ -85,7 +85,7 @@ export default {
 
   head () {
     return {
-      title: `${this.author.name} | ${this.$store.state.meta.name}`,
+      title: `${this.$route.params.author} | ${this.$store.state.meta.name}`,
       meta: [
         { description: this.$store.state.meta.description }
       ]
