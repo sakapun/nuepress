@@ -73,7 +73,7 @@ module.exports = {
       const categories = await axios.get(`${apiUrl}/wp/v2/categories?per_page=100&page=1&_embed=1`)
       const categoryRoutes = categories.data.map((category) => {
         return {
-          route: category.slug,
+          route: decodeURI(category.slug),
           payload: category
         }
       })
