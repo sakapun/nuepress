@@ -8,8 +8,7 @@
       <ArticleList :articles="authorArticles.articles"/>
       <InfiniteLoading
         v-if="isLoadingMore"
-        ref="infiniteLoading"
-        :on-infinite="moreArticles"
+        @infinite="moreArticles"
       >
         <span slot="spinner">
           <Spinner1/>
@@ -93,16 +92,16 @@ export default {
   },
 
   methods: {
-    moreArticles () {
+    moreArticles ($state) {
       this.authorArticles.page++
 
       this.$axios.get(`${this.$store.state.wordpressAPI}/wp/v2/posts?orderby=date&per_page=10&author=${this.author.id}&_embed&page=${this.authorArticles.page}`)
         .then(response => {
           this.authorArticles.articles = this.authorArticles.articles.concat(response.data)
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded')
+          $state.loaded()
         })
         .catch(() => {
-          this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete')
+          $state.complete()
         })
     }
   }
