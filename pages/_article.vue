@@ -26,6 +26,7 @@
       </div>
     </transition>
     <div v-html="linkRGB"></div>
+    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" v-if="hasTwitter"></script>
   </article>
 </template>
 
@@ -82,6 +83,9 @@ export default {
       } else {
         return { height: 0, width: 0 }
       }
+    },
+    hasTwitter () {
+      return this.article.content.rendered.indexOf('https://platform.twitter.com/widgets.js') !== -1
     }
   },
 
