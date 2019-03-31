@@ -26,7 +26,9 @@
       </div>
     </transition>
     <div v-html="linkRGB"></div>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" v-if="hasTwitter"></script>
+    <no-ssr>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" v-if="hasTwitter" key="script-async"></script>
+    </no-ssr>
   </article>
 </template>
 
