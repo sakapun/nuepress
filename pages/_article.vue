@@ -27,7 +27,7 @@
     </transition>
     <div v-html="linkRGB"></div>
     <no-ssr>
-      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" v-if="hasTwitter" key="script-async"></script>
+      <script async src="https://platform.twitter.com/widgets.js" charset="utf-8" v-if="hasTwitter"></script>
     </no-ssr>
   </article>
 </template>
@@ -132,12 +132,31 @@ export default {
           selector: 'a'
         })
       }
+    },
+
+    replaceGistIframe () {
+      const script = this.$el.querySelector('script[src^="https://gist.github.com/"]')
+      if (script) {
+        const parent = script.parentNode
+        const iframe = document.createElement('iframe')
+        iframe.width = '100%'
+        iframe.src = URL.createObjectURL(new Blob(['<!DOCTYPE html><title></title>' + script.outerHTML], {type: 'text/html'}))
+        parent.replaceChild(iframe, script)
+        iframe.onload = function () {
+          console.log(iframe.innerHeight)
+        }
+      }
     }
   },
 
   mounted () {
     this.gallery()
     this.loadFeaturedImageExpanded()
+    this.replaceGistIframe()
+  },
+
+  updated () {
+    this.replaceGistIframe()
   },
 
   watch: {
