@@ -12,9 +12,15 @@
       replaceGistIframe () {
         const scripts = this.$el.querySelectorAll('script')
         scripts.forEach(script => {
+          const parentNode = script.parentNode
+          let alternativeNode
           if (script.src.indexOf('https://gist.github.com/') !== -1) {
             console.log(1)
+          } else {
+            alternativeNode = document.createElement('script')
+            alternativeNode.src = script.src
           }
+          parentNode.replaceChild(alternativeNode, script)
         })
         // if (script) {
         //   const parent = script.parentNode
@@ -29,6 +35,9 @@
       }
     },
     mounted () {
+      this.replaceGistIframe()
+    },
+    updated () {
       this.replaceGistIframe()
     }
   }
