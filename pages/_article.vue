@@ -21,7 +21,7 @@
             <nuxt-link class="author fancy" :to="`/authors/${author.slug}`">{{ author.name }}</nuxt-link>
           </div>
         </div>
-        <div class="content" id="article-content" v-html="article.content.rendered"></div>
+        <ArticleContent :content="article.content.rendered" />
         <ArticleComments :article="article"/>
       </div>
     </transition>
@@ -36,6 +36,7 @@
 import * as Vibrant from 'node-vibrant'
 import ArticleFeaturedImage from '~/components/ArticleFeaturedImage.vue'
 import ArticleComments from '~/components/ArticleComments'
+import ArticleContent from '~/components/ArticleContent'
 
 if (process.browser) {
   require('lightgallery.js')
@@ -67,7 +68,8 @@ export default {
 
   components: {
     ArticleFeaturedImage,
-    ArticleComments
+    ArticleComments,
+    ArticleContent
   },
 
   computed: {
@@ -132,31 +134,12 @@ export default {
           selector: 'a'
         })
       }
-    },
-
-    replaceGistIframe () {
-      const script = this.$el.querySelector('script[src^="https://gist.github.com/"]')
-      if (script) {
-        const parent = script.parentNode
-        const iframe = document.createElement('iframe')
-        iframe.width = '100%'
-        iframe.src = URL.createObjectURL(new Blob(['<!DOCTYPE html><title></title>' + script.outerHTML], {type: 'text/html'}))
-        parent.replaceChild(iframe, script)
-        iframe.onload = function () {
-          console.log(iframe.innerHeight)
-        }
-      }
     }
   },
 
   mounted () {
     this.gallery()
     this.loadFeaturedImageExpanded()
-    this.replaceGistIframe()
-  },
-
-  updated () {
-    this.replaceGistIframe()
   },
 
   watch: {
