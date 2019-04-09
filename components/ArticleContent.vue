@@ -9,40 +9,39 @@
       content: String
     },
     methods: {
-      replaceGistIframe () {
+      runScript () {
         const scripts = this.$el.querySelectorAll('script')
         scripts.forEach(script => {
           const parentNode = script.parentNode
           let alternativeNode
+          // todo: ホワイトリスト方式にする
           if (script.src.indexOf('https://gist.github.com/') !== -1) {
-            console.log(1)
+            alternativeNode = document.createElement('iframe')
+            alternativeNode.src = URL.createObjectURL(new Blob(['<!DOCTYPE html><title></title>' + script.outerHTML], {type: 'text/html'}))
+            alternativeNode.onload = () => {
+              alternativeNode.height = alternativeNode.contentDocument.body.scrollHeight + 50
+            }
           } else {
             alternativeNode = document.createElement('script')
             alternativeNode.src = script.src
           }
           parentNode.replaceChild(alternativeNode, script)
         })
-        // if (script) {
-        //   const parent = script.parentNode
-        //   const iframe = document.createElement('iframe')
-        //   iframe.width = '100%'
-        //   iframe.src = URL.createObjectURL(new Blob(['<!DOCTYPE html><title></title>' + script.outerHTML], {type: 'text/html'}))
-        //   parent.replaceChild(iframe, script)
-        //   iframe.onload = function () {
-        //     console.log(iframe.innerHeight)
-        //   }
-        // }
       }
     },
     mounted () {
-      this.replaceGistIframe()
+      this.runScript()
     },
     updated () {
-      this.replaceGistIframe()
+      this.runScript()
     }
   }
 </script>
 
 <style scoped>
-
+.content >>> iframe {
+  width: 100%;
+  border: none;
+  overflow: hidden;
+}
 </style>
